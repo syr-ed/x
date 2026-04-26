@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>橙子文件 - 官方数字资源服务平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  <!-- Tailwind 配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FF6B35', // 橙子主色调
+            secondary: '#FF9500',
+            danger: '#EF4444',
+            success: '#10B981',
+            dark: '#1D2129',
+            light: '#FFF7ED'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .card-hover {
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+      .card-hover:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 107, 53, 0.2);
+      }
+      .btn-primary {
+        @apply bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-lg hover:shadow-lg transition-all transform hover:-translate-y-0.5;
+      }
+      .btn-secondary {
+        @apply bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-all;
+      }
+      .btn-danger {
+        @apply bg-danger text-white font-bold rounded-lg hover:bg-danger/90 transition-all transform hover:-translate-y-0.5;
+      }
+      .btn-success {
+        @apply bg-success text-white font-bold rounded-lg hover:bg-success/90 transition-all transform hover:-translate-y-0.5;
+      }
+      .section-title {
+        @apply text-xl font-bold text-gray-800 mb-4 flex items-center;
+      }
+      .strikethrough {
+        text-decoration: line-through;
+        color: #9CA3AF;
+      }
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* 弹窗样式 */
+    .modal-overlay {
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 w-full z-50 bg-white shadow-md">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center">
+          <i class="fa fa-lemon-o text-primary text-xl mr-2"></i>
+          <span class="text-lg font-bold text-primary">橙子文件</span>
+        </div>
+        <div class="flex space-x-2">
+          <a href="#tutorial" class="btn-success px-3 py-1.5 text-sm">
+            <i class="fa fa-play-circle mr-1"></i>视频教学
+          </a>
+          <a href="https://qm.qq.com/q/KXZHXZSpKS" target="_blank" class="btn-primary px-3 py-1.5 text-sm">
+            <i class="fa fa-headphones mr-1"></i>QQ客服
+          </a>
+          <!-- 反馈按钮 - 跳转到单独页面 -->
+          <a href="feedback.html" class="btn-danger px-3 py-1.5 text-sm">
+            <i class="fa fa-comment-o mr-1"></i>问题反馈
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主内容区 -->
+  <main class="pt-20 pb-6 px-4">
+    <!-- 超级明显的公告栏 -->
+    <div class="max-w-4xl mx-auto mb-6 bg-red-50 border-2 border-red-300 rounded-lg p-4">
+      <div class="flex items-start">
+        <i class="fa fa-exclamation-triangle text-red-500 text-2xl mr-3 mt-0.5"></i>
+        <div class="text-red-800">
+          <p class="font-bold text-lg mb-2">👇 新手必看 👇</p>
+          <p class="text-base font-semibold mb-1">✅ 点击下面任意商品卡片即可购买</p>
+          <p class="text-base font-semibold mb-1">✅ 扫码后选择商品，填写QQ号自动发货</p>
+          <p class="text-base font-semibold">✅ 认准收款人：橙子(**忠)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🔥 立即购买大按钮 -->
+    <div class="max-w-4xl mx-auto mb-8">
+      <a href="#products" class="block w-full btn-primary py-4 text-xl text-center rounded-xl shadow-lg">
+        <i class="fa fa-shopping-cart mr-2"></i>🚀 点击这里立即购买所有商品
+      </a>
+    </div>
+
+    <!-- 🔥 视频教学专区 -->
+    <div id="tutorial" class="max-w-4xl mx-auto mb-8">
+      <h2 class="section-title">
+        <i class="fa fa-play-circle text-success mr-2"></i>📺 必看视频教学（3分钟学会）
+      </h2>
+      <div class="bg-white rounded-xl p-4 shadow-lg">
+        <div class="text-center">
+          <div class="bg-gray-900 rounded-lg overflow-hidden mb-4">
+            <video 
+              id="tutorial-video"
+              class="w-full h-auto"
+              controls
+              poster="https://picsum.photos/id/237/800/450"
+              preload="metadata"
+            >
+              <source src="./tutorial.mp4" type="video/mp4">
+              您的浏览器不支持视频播放，请点击下方按钮下载观看
+            </video>
+          </div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <a href="./tutorial.mp4" download class="btn-primary py-3 text-base">
+              <i class="fa fa-download mr-1"></i>下载视频教程
+            </a>
+            <a href="https://qm.qq.com/q/KXZHXZSpKS" target="_blank" class="btn-secondary py-3 text-base">
+              <i class="fa fa-question-circle mr-1"></i>看不懂？立即问客服
+            </a>
+          </div>
+          
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-left">
+            <p class="text-sm text-blue-800 font-bold mb-2">📌 视频添加教程：</p>
+            <ol class="text-xs text-blue-700 space-y-1 list-decimal list-inside">
+              <li>把您的教程视频重命名为：<code class="bg-blue-100 px-1 rounded">tutorial.mp4</code></li>
+              <li>将视频文件和这个HTML网页放在同一个文件夹里</li>
+              <li>上传到网站空间，刷新页面就能看到视频了</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🔥 娱乐功能专区 -->
+    <div class="max-w-4xl mx-auto mb-8">
+      <h2 class="section-title">
+        <i class="fa fa-gamepad text-danger mr-2"></i>娱乐功能专区
+      </h2>
+      <div class="grid grid-cols-1 gap-4">
+        <!-- 信息轰炸卡片 -->
+        <div class="bg-gradient-to-r from-red-500 to-red-600 rounded-xl overflow-hidden shadow-lg card-hover" id="bomb-card">
+          <div class="p-6 text-white">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-2xl font-bold mb-2">🍊 橙子短信测压</h3>
+                <p class="text-white/90 mb-4">650+接口 | 高并发 | 稳定高效</p>
+                <ul class="text-sm text-white/80 space-y-1">
+                  <li>✅ 支持自定义循环次数</li>
+                  <li>✅ 支持并发线程调整</li>
+                  <li>✅ 实时执行日志显示</li>
+                </ul>
+                <p class="text-lg font-bold mt-4">
+                  限时特惠：<span class="text-2xl">¥7.99</span> 
+                  <span class="strikethrough text-base ml-2">原价¥9.99</span>
+                  <span class="bg-yellow-400 text-red-600 px-2 py-0.5 rounded text-xs ml-2">立省2元</span>
+                </p>
+              </div>
+              <div class="text-6xl opacity-30">
+                <i class="fa fa-bomb"></i>
+              </div>
+            </div>
+            <button class="w-full mt-6 bg-white text-danger font-bold py-4 text-lg rounded-lg hover:bg-gray-100 transition-all">
+              <i class="fa fa-rocket mr-2"></i>点击购买使用
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📱 TG账号专区 -->
+    <div id="products" class="max-w-4xl mx-auto mb-8">
+      <h2 class="section-title">
+        <i class="fa fa-paper-plane text-blue-500 mr-2"></i>TG账号专区
+      </h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <!-- 商品1 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow card-hover product-card" data-name="纸飞机老号" data-price="12.99">
+          <div class="h-24 bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
+            <i class="fa fa-paper-plane text-white text-4xl"></i>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="text-sm font-bold text-gray-800 mb-2 line-clamp-2 h-10">纸飞机老号</h3>
+            <p class="text-2xl font-bold text-primary mb-2">¥12.99</p>
+            <button class="w-full btn-primary py-2 text-sm">
+              点击购买
+            </button>
+          </div>
+        </div>
+        
+        <!-- 商品2 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow card-hover product-card" data-name="纸飞机账号+95缅甸新号" data-price="4.90">
+          <div class="h-24 bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
+            <i class="fa fa-paper-plane text-white text-4xl"></i>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="text-sm font-bold text-gray-800 mb-2 line-clamp-2 h-10">纸飞机账号+95缅甸新号</h3>
+            <p class="text-2xl font-bold text-primary mb-2">¥4.90</p>
+            <button class="w-full btn-primary py-2 text-sm">
+              点击购买
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📄 游戏文件专区 -->
+    <div class="max-w-4xl mx-auto mb-8">
+      <h2 class="section-title">
+        <i class="fa fa-file-text-o text-indigo-500 mr-2"></i>游戏文件专区
+      </h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <!-- 商品3 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow card-hover product-card" data-name="定制文件" data-price="17.90">
+          <div class="h-24 bg-gradient-to-r from-indigo-400 to-indigo-600 flex items-center justify-center">
+            <i class="fa fa-file-text-o text-white text-4xl"></i>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="text-sm font-bold text-gray-800 mb-2 line-clamp-2 h-10">定制文件</h3>
+            <p class="text-2xl font-bold text-primary mb-2">¥17.90</p>
+            <button class="w-full btn-primary py-2 text-sm">
+              点击购买
+            </button>
+          </div>
+        </div>
+        
+        <!-- 商品4 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow card-hover product-card" data-name="内部文件" data-price="13.90">
+          <div class="h-24 bg-gradient-to-r from-indigo-400 to-indigo-600 flex items-center justify-center">
+            <i class="fa fa-file-text-o text-white text-4xl"></i>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="text-sm font-bold text-gray-800 mb-2 line-clamp-2 h-10">内部文件</h3>
+            <p class="text-2xl font-bold text-primary mb-2">¥13.90</p>
+            <button class="w-full btn-primary py-2 text-sm">
+              点击购买
+            </button>
+          </div>
+        </div>
+        
+        <!-- 商品5 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow card-hover product-card" data-name="定制范围.0~3身位" data-price="10.00">
+          <div class="h-24 bg-gradient-to-r from-indigo-400 to-indigo-600 flex items-center justify-center">
+            <i class="fa fa-file-text-o text-white text-4xl"></i>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="text-sm font-bold text-gray-800 mb-2 line-clamp-2 h-10">定制范围.0~3身位</h3>
+            <p class="text-2xl font-bold text-primary mb-2">¥10.00</p>
+            <button class="w-full btn-primary py-2 text-sm">
+              点击购买
+            </button>
+          </div>
+        </div>
+        
+        <!-- 商品6 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow card-hover product-card" data-name="免root收费内透pqk文件" data-price="6.99">
+          <div class="h-24 bg-gradient-to-r from-green-400 to-green-600 flex items-center justify-center">
+            <i class="fa fa-gamepad text-white text-4xl"></i>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="text-sm font-bold text-gray-800 mb-2 line-clamp-2 h-10">免root收费内透pqk文件</h3>
+            <p class="text-2xl font-bold text-primary mb-2">¥6.99</p>
+            <button class="w-full btn-primary py-2 text-sm">
+              点击购买
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⭐ 套餐服务专区 -->
+    <div class="max-w-4xl mx-auto mb-8">
+      <h2 class="section-title">
+        <i class="fa fa-star text-purple-500 mr-2"></i>套餐服务专区
+      </h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <!-- 商品7 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow card-hover product-card" data-name="套餐，免费更新所有文件" data-price="10.99">
+          <div class="h-24 bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center">
+            <i class="fa fa-star text-white text-4xl"></i>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="text-sm font-bold text-gray-800 mb-2 line-clamp-2 h-10">套餐，免费更新所有文件</h3>
+            <p class="text-2xl font-bold text-primary mb-2">¥10.99</p>
+            <button class="w-full btn-primary py-2 text-sm">
+              点击购买
+            </button>
+          </div>
+        </div>
+        
+        <!-- 商品8 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow card-hover product-card" data-name="包赛季19.9元" data-price="19.99">
+          <div class="h-24 bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center">
+            <i class="fa fa-trophy text-white text-4xl"></i>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="text-sm font-bold text-gray-800 mb-2 line-clamp-2 h-10">包赛季19.9元</h3>
+            <p class="text-2xl font-bold text-primary mb-2">¥19.99</p>
+            <button class="w-full btn-primary py-2 text-sm">
+              点击购买
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 套餐说明 -->
+    <div class="max-w-4xl mx-auto mt-8">
+      <div class="bg-white rounded-xl p-4 shadow">
+        <h3 class="section-title">
+          <i class="fa fa-info-circle text-primary mr-2"></i>套餐说明
+        </h3>
+        <div class="space-y-2 text-base text-gray-700">
+          <p>✅ <strong>基础保障</strong>：购买单个文件，使用途中出现和谐或没效果，全部免费更改</p>
+          <p>✅ <strong>包赛季畅玩</strong>：整个赛季所有文件随便玩，优先获取最新文件</p>
+          <p>⚠️ <strong>非套餐用户</strong>：使用时有效果但过几周后失效，需要按原价格重新购买</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 联系客服 -->
+    <div id="contact" class="max-w-4xl mx-auto mt-8">
+      <div class="bg-white rounded-xl p-4 shadow">
+        <h3 class="section-title">
+          <i class="fa fa-headphones text-primary mr-2"></i>联系客服
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <a href="https://qm.qq.com/q/KXZHXZSpKS" target="_blank" class="flex items-center p-4 bg-blue-50 rounded-lg card-hover border border-blue-200">
+            <i class="fa fa-qq text-blue-500 text-3xl mr-4"></i>
+            <div>
+              <p class="font-bold text-base">QQ客服(推荐)</p>
+              <p class="text-sm text-gray-600">点击直接添加好友</p>
+            </div>
+          </a>
+          <div class="flex items-center p-4 bg-green-50 rounded-lg border border-green-200">
+            <i class="fa fa-wechat text-green-500 text-3xl mr-4"></i>
+            <div>
+              <p class="font-bold text-base">微信客服</p>
+              <p class="text-sm text-gray-600">syr12345678k</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部反馈入口 -->
+    <div class="max-w-4xl mx-auto mt-8">
+      <a href="feedback.html" class="block w-full btn-danger py-4 text-xl text-center rounded-xl shadow-lg">
+        <i class="fa fa-comment-o mr-2"></i>🚨 有问题？点击这里提交官方反馈
+      </a>
+    </div>
+  </main>
+
+  <!-- 统一购买弹窗 -->
+  <div id="purchase-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="modal-overlay absolute inset-0"></div>
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md relative z-10 overflow-hidden">
+      <div class="bg-gradient-to-r from-primary to-secondary p-6 text-white text-center">
+        <i class="fa fa-shopping-cart text-4xl mb-2"></i>
+        <h3 class="text-xl font-bold" id="modal-product-name">购买商品</h3>
+        <p class="text-3xl font-bold mt-2" id="modal-product-price">¥0.00</p>
+      </div>
+      
+      <!-- 顶部关闭按钮 -->
+      <div class="flex justify-between items-center px-6 py-3 border-b">
+        <p class="text-lg font-semibold text-gray-700">请扫描下方二维码付款</p>
+        <button id="close-purchase-btn-top" class="w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center text-xl font-bold hover:bg-red-600 transition-colors">
+          ×
+        </button>
+      </div>
+      
+      <div class="p-6">
+        <div class="text-center mb-6">
+          <!-- 微信收款码 -->
+          <div class="bg-gray-100 rounded-lg p-4 mb-4 border-2 border-gray-200">
+            <img 
+              src="./qrcode.jpg" 
+              alt="微信收款码" 
+              class="w-48 h-48 mx-auto object-cover rounded-lg" 
+              id="qrcode-image"
+              onerror="this.style.display='none'; document.getElementById('qrcode-error').style.display='block';"
+            >
+            <div id="qrcode-error" class="hidden text-center py-8">
+              <i class="fa fa-qrcode text-4xl text-gray-400 mb-2"></i>
+              <p class="text-gray-500">收款码加载中...</p>
+              <p class="text-xs text-gray-400 mt-1">请将收款码命名为qrcode.jpg放在同一文件夹</p>
+            </div>
+            <p class="text-sm text-gray-600 mt-2 font-semibold">微信扫码支付 | 长按图片可保存</p>
+          </div>
+          
+          <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-left mb-4">
+            <p class="text-base text-green-800 font-bold mb-2">✨ 智能点单模式：</p>
+            <p class="text-sm text-green-700">扫码后进入官方点单页面，像菜单一样选择商品，填写QQ号，付款后自动发货！</p>
+          </div>
+          
+          <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-left">
+            <p class="text-base text-yellow-800 font-bold mb-2">📋 购买流程：</p>
+            <ol class="text-sm text-yellow-700 space-y-2 list-decimal list-inside">
+              <li>扫描上方微信二维码</li>
+              <li>在点单页面选择您要购买的商品</li>
+              <li>填写您的QQ号(用于发货)</li>
+              <li>支付对应金额，系统自动发货</li>
+            </ol>
+          </div>
+        </div>
+        
+        <div class="space-y-3">
+          <a href="https://qm.qq.com/q/KXZHXZSpKS" target="_blank" class="block w-full btn-primary py-3 text-base text-center">
+            <i class="fa fa-qq mr-1"></i>有问题？联系QQ客服
+          </a>
+          <!-- 底部额外关闭按钮 -->
+          <button id="close-purchase-btn-bottom" class="w-full btn-secondary py-3 text-base font-bold">
+            <i class="fa fa-times mr-1"></i>关闭窗口
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 密码验证弹窗 -->
+  <div id="password-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="modal-overlay absolute inset-0"></div>
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md relative z-10 overflow-hidden">
+      <div class="bg-gradient-to-r from-primary to-secondary p-6 text-white text-center">
+        <i class="fa fa-lock text-4xl mb-2"></i>
+        <h3 class="text-xl font-bold">功能需要密码访问</h3>
+      </div>
+      
+      <!-- 顶部关闭按钮 -->
+      <div class="flex justify-between items-center px-6 py-3 border-b">
+        <p class="text-lg font-semibold text-gray-700">购买密码获取访问权限</p>
+        <button id="cancel-password-btn-top" class="w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center text-xl font-bold hover:bg-red-600 transition-colors">
+          ×
+        </button>
+      </div>
+      
+      <div class="p-6">
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+          <p class="text-base text-yellow-800 font-bold mb-2">
+            <i class="fa fa-info-circle mr-1"></i>
+            密码需要购买获得
+          </p>
+          <p class="text-sm text-yellow-700 mt-1">
+            限时特惠：<span class="font-bold">¥7.99</span> 
+            <span class="strikethrough ml-2">原价¥9.99</span>
+            <span class="bg-yellow-400 text-red-600 px-2 py-0.5 rounded text-xs ml-2">立省2元</span>
+          </p>
+          <p class="text-xs text-yellow-700 mt-1">购买后永久有效</p>
+        </div>
+        
+        <div class="space-y-4 mb-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">购买方式</label>
+            <button id="buy-password-btn" class="block w-full btn-primary py-3 text-base text-center">
+              <i class="fa fa-shopping-cart mr-1"></i>点击购买密码
+            </button>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">输入密码</label>
+            <input type="password" id="access-password" placeholder="请输入购买获得的密码" class="w-full px-3 py-3 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-primary">
+          </div>
+        </div>
+        
+        <div class="flex space-x-3">
+          <button id="verify-password-btn" class="flex-1 btn-primary py-3 text-base font-bold">
+            <i class="fa fa-check mr-1"></i>验证密码
+          </button>
+          <!-- 底部额外关闭按钮 -->
+          <button id="cancel-password-btn-bottom" class="flex-1 btn-secondary py-3 text-base font-bold">
+            <i class="fa fa-times mr-1"></i>关闭
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部 -->
+  <footer class="bg-white border-t py-4 mt-8">
+    <div class="container mx-auto px-4 text-center text-sm text-gray-500">
+      <p>© 2026 橙子文件 版权所有</p>
+      <p class="mt-1">认准官方渠道，拒绝私下转账，谨防假冒诈骗</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // 密码配置
+    const CORRECT_PASSWORD = "chengzi2026";
+    
+    // 购买弹窗元素
+    const purchaseModal = document.getElementById('purchase-modal');
+    const closePurchaseBtnTop = document.getElementById('close-purchase-btn-top');
+    const closePurchaseBtnBottom = document.getElementById('close-purchase-btn-bottom');
+    const modalProductName = document.getElementById('modal-product-name');
+    const modalProductPrice = document.getElementById('modal-product-price');
+    
+    // 密码弹窗元素
+    const passwordModal = document.getElementById('password-modal');
+    const bombCard = document.getElementById('bomb-card');
+    const buyPasswordBtn = document.getElementById('buy-password-btn');
+    const cancelPasswordBtnTop = document.getElementById('cancel-password-btn-top');
+    const cancelPasswordBtnBottom = document.getElementById('cancel-password-btn-bottom');
+    const verifyPasswordBtn = document.getElementById('verify-password-btn');
+    const accessPassword = document.getElementById('access-password');
+    
+    // 所有商品卡片
+    const productCards = document.querySelectorAll('.product-card');
+    
+    // 打开购买弹窗
+    function openPurchaseModal(productName, productPrice) {
+      modalProductName.textContent = productName;
+      modalProductPrice.textContent = `¥${productPrice}`;
+      purchaseModal.classList.remove('hidden');
+    }
+    
+    // 关闭购买弹窗
+    function closePurchaseModal() {
+      purchaseModal.classList.add('hidden');
+    }
+    
+    // 商品卡片点击事件
+    productCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const name = card.getAttribute('data-name');
+        const price = card.getAttribute('data-price');
+        openPurchaseModal(name, price);
+      });
+    });
+    
+    // 关闭购买弹窗事件
+    closePurchaseBtnTop.addEventListener('click', closePurchaseModal);
+    closePurchaseBtnBottom.addEventListener('click', closePurchaseModal);
+    
+    // 信息轰炸卡片点击事件
+    bombCard.addEventListener('click', () => {
+      passwordModal.classList.remove('hidden');
+      accessPassword.focus();
+    });
+    
+    // 购买密码按钮点击事件
+    buyPasswordBtn.addEventListener('click', () => {
+      closePasswordModal();
+      openPurchaseModal('橙子短信测压密码', '7.99');
+    });
+    
+    // 关闭密码弹窗
+    function closePasswordModal() {
+      passwordModal.classList.add('hidden');
+      accessPassword.value = '';
+    }
+    
+    // 关闭密码弹窗事件
+    cancelPasswordBtnTop.addEventListener('click', closePasswordModal);
+    cancelPasswordBtnBottom.addEventListener('click', closePasswordModal);
+    
+    // 验证密码
+    verifyPasswordBtn.addEventListener('click', () => {
+      const password = accessPassword.value.trim();
+      
+      if (password === CORRECT_PASSWORD) {
+        window.open('https://syr-ed.github.io/005/', '_blank');
+        closePasswordModal();
+      } else if (password === '') {
+        alert('请输入密码');
+      } else {
+        alert('密码错误！请点击上方按钮购买正确的密码');
+      }
+    });
+    
+    // 回车键验证密码
+    accessPassword.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        verifyPasswordBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>

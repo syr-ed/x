@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>橙子文件 - 问题反馈</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FF6B35',
+            danger: '#EF4444',
+            success: '#10B981',
+            warning: '#F59E0B',
+            info: '#3B82F6'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100">
+  <main class="max-w-3xl mx-auto px-4 py-10">
+    <div class="text-center mb-6">
+      <h1 class="text-2xl font-bold text-red-600">🚨 官方问题反馈</h1>
+      <p class="text-gray-500 text-sm mt-1">选择问题类型 → 选择具体问题 → 提交到邮箱</p>
+    </div>
+
+    <div class="bg-white rounded-xl shadow p-6">
+      <form id="feedbackForm" class="space-y-6">
+        <!-- 1. 核心大类选择（你要的：推特、TG、文件等） -->
+        <div>
+          <label class="font-bold text-gray-700 text-lg">🔴 问题大类 *</label>
+          <select id="mainType" class="w-full border-2 border-red-300 p-4 rounded-lg mt-2 text-base">
+            <option value="">请选择问题大类</option>
+            <option value="twitter">推特（Twitter）账号问题</option>
+            <option value="tg">TG/纸飞机账号问题</option>
+            <option value="file">文件/软件使用问题</option>
+            <option value="pay">购买/付款/发货问题</option>
+            <option value="qq">QQ/客服联系问题</option>
+            <option value="other">其他问题</option>
+          </select>
+        </div>
+
+        <!-- 2. 具体问题选择（根据大类自动显示） -->
+        <div id="subTypeWrapper" class="hidden">
+          <label class="font-bold text-gray-700 text-lg">🔍 具体问题 *</label>
+          <select id="subType" class="w-full border-2 border-blue-300 p-4 rounded-lg mt-2 text-base">
+            <!-- 下面由JS动态填充 -->
+          </select>
+        </div>
+
+        <!-- 3. 紧急程度（你之前要的） -->
+        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+          <label class="font-bold text-yellow-700 text-lg">⏰ 紧急程度 *</label>
+          <select id="urgency" class="w-full border p-3 rounded-lg mt-2">
+            <option value="normal">🟢 普通 - 24小时内回复</option>
+            <option value="urgent">🟡 紧急 - 12小时内回复</option>
+            <option value="critical">🔴 特急 - 4小时内优先处理</option>
+          </select>
+        </div>
+
+        <!-- 4. 联系方式 -->
+        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+          <h3 class="font-bold text-blue-700 text-lg mb-3">📞 您的联系方式 *</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-sm font-bold">联系渠道</label>
+              <select id="contactType" class="w-full border p-3 rounded-lg mt-1">
+                <option value="QQ号">QQ号</option>
+                <option value="微信号">微信号</option>
+                <option value="手机号">手机号</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-sm font-bold">联系账号</label>
+              <input id="contactInfo" type="text" class="w-full border p-3 rounded-lg mt-1" placeholder="请填写能联系到您的账号">
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. 问题描述（通用） -->
+        <div>
+          <label class="font-bold text-gray-700 text-lg">📝 问题详细描述 *</label>
+          <textarea id="desc" rows="4" class="w-full border p-3 rounded-lg mt-2" placeholder="请详细描述您遇到的问题，如：登录不上、收不到验证码、付款没发货等"></textarea>
+        </div>
+
+        <!-- 6. 验证码 -->
+        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+          <label class="font-bold text-gray-700 text-lg">🔐 安全验证 *</label>
+          <div class="flex items-center gap-3 mt-2">
+            <span id="captcha" class="text-xl font-bold bg-white p-2 rounded border"></span>
+            <input id="captchaAns" type="text" class="w-24 border p-3 rounded-lg text-center" placeholder="答案">
+            <button type="button" id="refreshCaptcha" class="text-blue-500 text-sm">换一个</button>
+          </div>
+        </div>
+
+        <!-- 提交按钮（修复mailto） -->
+        <button type="submit" class="w-full bg-danger py-5 text-white font-bold rounded-lg text-xl shadow-lg">
+          🚀 一键提交到官方邮箱
+        </button>
+        <p class="text-center text-gray-500 text-sm">
+          点击后将自动打开邮箱，所有内容已自动填写，直接发送即可
+        </p>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    // 1. 定义各类型的子问题（你可以自由增删）
+    const subOptions = {
+      twitter: [
+        {value: "tw_login", text: "登录不上/一直转圈"},
+        {value: "tw_code", text: "收不到验证码/验证码错误"},
+        {value: "tw_ban", text: "账号被封禁/限制"},
+        {value: "tw_expire", text: "账号过期/失效"},
+        {value: "tw_other", text: "其他推特问题"}
+      ],
+      tg: [
+        {value: "tg_login", text: "TG登录不上/无法登录"},
+        {value: "tg_code", text: "收不到TG验证码"},
+        {value: "tg_ban", text: "TG账号被封/冻结"},
+        {value: "tg_chat", text: "无法发消息/加群"},
+        {value: "tg_other", text: "其他TG问题"}
+      ],
+      file: [
+        {value: "file_open", text: "文件打不开/解压失败"},
+        {value: "file_invalid", text: "文件失效/没效果"},
+        {value: "file_float", text: "悬浮窗不显示/无法开启"},
+        {value: "file_crash", text: "打开闪退/黑屏"},
+        {value: "file_other", text: "其他文件问题"}
+      ],
+      pay: [
+        {value: "pay_nosend", text: "付款后未发货/没收到货"},
+        {value: "pay_failed", text: "付款失败但扣钱"},
+        {value: "pay_wrong", text: "付错款/多付款"},
+        {value: "send_wrong", text: "发错商品/漏发"},
+        {value: "pay_other", text: "其他购买问题"}
+      ],
+      qq: [
+        {value: "qq_noadd", text: "加不上QQ客服/不通过"},
+        {value: "qq_noreply", text: "客服不回复/回复慢"},
+        {value: "qq_group", text: "进不了QQ群/群被封"},
+        {value: "qq_other", text: "其他QQ问题"}
+      ],
+      other: [
+        {value: "other_1", text: "建议/功能改进"},
+        {value: "other_2", text: "投诉/纠纷"},
+        {value: "other_3", text: "其他未列出问题"}
+      ]
+    };
+
+    // 2. 大类切换 → 自动加载子问题
+    const mainType = document.getElementById('mainType');
+    const subTypeWrapper = document.getElementById('subTypeWrapper');
+    const subType = document.getElementById('subType');
+
+    mainType.addEventListener('change', () => {
+      const val = mainType.value;
+      subType.innerHTML = '<option value="">请选择具体问题</option>';
+      if (val) {
+        subTypeWrapper.classList.remove('hidden');
+        // 填充子选项
+        subOptions[val].forEach(opt => {
+          const option = document.createElement('option');
+          option.value = opt.value;
+          option.textContent = opt.text;
+          subType.appendChild(option);
+        });
+      } else {
+        subTypeWrapper.classList.add('hidden');
+      }
+    });
+
+    // 3. 验证码
+    let a, b;
+    function genCaptcha() {
+      a = Math.floor(Math.random()*10)+1;
+      b = Math.floor(Math.random()*10)+1;
+      document.getElementById('captcha').textContent = `${a} + ${b} = ?`;
+    }
+    genCaptcha();
+    document.getElementById('refreshCaptcha').addEventListener('click', genCaptcha);
+
+    // 4. 表单提交（修复mailto，解决点击无反应）
+    const form = document.getElementById('feedbackForm');
+    const officialEmail = "2643413267@qq.com"; // 你的官方邮箱
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // 验证
+      if (!mainType.value) { alert('请选择问题大类！'); return; }
+      if (!subType.value) { alert('请选择具体问题！'); return; }
+      if (!document.getElementById('contactInfo').value) { alert('请填写联系方式！'); return; }
+      if (!document.getElementById('desc').value) { alert('请填写问题描述！'); return; }
+      
+      // 验证验证码
+      const ans = parseInt(document.getElementById('captchaAns').value);
+      if (isNaN(ans) || ans !== a+b) {
+        alert('验证码错误！');
+        genCaptcha();
+        document.getElementById('captchaAns').value = '';
+        return;
+      }
+
+      // 生成邮件内容
+      const mainText = mainType.options[mainType.selectedIndex].text;
+      const subText = subType.options[subType.selectedIndex].text;
+      const urgency = document.getElementById('urgency').value;
+      let urgencyLabel = "🟢 普通";
+      if (urgency === "urgent") urgencyLabel = "🟡 紧急";
+      if (urgency === "critical") urgencyLabel = "🔴 特急";
+
+      const ticket = "CZ" + Date.now().toString().slice(-8);
+      const subject = `【${urgencyLabel}】橙子文件反馈 #${ticket} - ${mainText} > ${subText}`;
+      
+      let body = `
+【橙子文件 问题反馈单】
+问题编号：${ticket}
+问题大类：${mainText}
+具体问题：${subText}
+紧急程度：${urgencyLabel}
+提交时间：${new Date().toLocaleString()}
+
+【联系方式】
+渠道：${document.getElementById('contactType').value}
+账号：${document.getElementById('contactInfo').value}
+
+【问题描述】
+${document.getElementById('desc').value}
+`;
+
+      // 修复mailto：用a标签模拟点击，解决部分浏览器无反应
+      const mailtoLink = document.createElement('a');
+      mailtoLink.href = `mailto:${officialEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      mailtoLink.target = '_blank';
+      document.body.appendChild(mailtoLink);
+      mailtoLink.click();
+      document.body.removeChild(mailtoLink);
+
+      alert('已自动打开邮箱，请直接发送邮件即可！');
+    });
+  </script>
+</body>
+</html>
